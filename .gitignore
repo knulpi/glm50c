@@ -1,0 +1,25 @@
+# Virtual environments
+.venv/
+venv/
+
+# Python build/runtime artifacts
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+
+# Downloaded Piper voice models (fetched on first run)
+voices/
+*.onnx
+*.onnx.json
+
+# Measurement logs (private user data)
+*.csv
+
+# Editor / office lock files
+.~lock.*#
+
+# Test/tool caches
+.pytest_cache/
+.ruff_cache/
