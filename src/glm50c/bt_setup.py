@@ -6,9 +6,7 @@ automatically (the GLM 50 C uses PIN 0000 if it asks at all).
 """
 
 import os
-import pty
 import re
-import select
 import subprocess
 import sys
 import time
@@ -56,6 +54,9 @@ def pair_and_trust(mac: str, pin: str = DEFAULT_PIN,
 
     Answers PIN and confirmation prompts automatically. Returns
     (ok, detail); detail carries the failure line on error."""
+    import pty      # Unix-only modules — imported here so the package
+    import select   # stays importable on Windows
+
     master, slave = pty.openpty()
     try:
         proc = subprocess.Popen(["bluetoothctl"], stdin=slave, stdout=slave,
