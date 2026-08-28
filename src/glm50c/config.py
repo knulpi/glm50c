@@ -18,7 +18,8 @@ def voices_dir() -> Path:
 
 
 def default_csv_path() -> Path:
-    return data_dir() / "measurements.csv"
+    # Measurements are user documents, not app data — keep them visible
+    return Path(platformdirs.user_documents_dir()) / APP_NAME / "measurements.csv"
 
 
 def config_path() -> Path:

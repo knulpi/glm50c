@@ -25,7 +25,7 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/CHANGEME/glm50c"
+Repository = "https://github.com/knulpi/glm50c"
 
 [project.scripts]
 glm-logger = "glm50c.cli:main"

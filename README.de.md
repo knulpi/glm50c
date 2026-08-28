@@ -26,7 +26,7 @@ Addition/Subtraktion (Länge und Fläche), dazu Fehlmessungs-Frames.
 ## Installation
 
 ```console
-pipx install git+https://github.com/CHANGEME/glm50c
+pipx install git+https://github.com/knulpi/glm50c
 ```
 
 (oder `pip install git+…` in ein venv deiner Wahl)
@@ -79,7 +79,7 @@ Die deutschen Flags des ursprünglichen Skripts (`--kanal`, `--stumm`,
 
 | Was | Wo (Linux) |
 |---|---|
-| Messwerte-Log | `~/.local/share/glm50c/measurements.csv` |
+| Messwerte-Log | `~/Dokumente/glm50c/measurements.csv` (dein XDG-Dokumente-Ordner) |
 | Sprachmodelle | `~/.local/share/glm50c/voices/` |
 | Config | `~/.config/glm50c/config.toml` |
 

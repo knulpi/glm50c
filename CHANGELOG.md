@@ -12,8 +12,9 @@ First packaged release.
   user data directory (no more vendored `.onnx` files).
 - Automatic Bluetooth setup on Linux: discovery, pairing, trust — the
   device address is saved to a config file after the first connection.
-- Measurement CSV moved to the user data directory; language-invariant
-  English header. Old-format files are moved aside automatically.
+- Measurement CSV moved to the user's documents folder
+  (`~/Documents/glm50c/`); language-invariant English header. Old-format
+  files are moved aside automatically.
 - Experimental Windows support (RFCOMM socket + `winsound` playback).
 - Unit tests for the frame parser, both number verbalizers and CSV storage.
 

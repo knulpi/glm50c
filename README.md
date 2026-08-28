@@ -25,7 +25,7 @@ addition/subtraction (length and area), plus error frames.
 ## Install
 
 ```console
-pipx install git+https://github.com/CHANGEME/glm50c
+pipx install git+https://github.com/knulpi/glm50c
 ```
 
 (or `pip install git+…` into a venv of your choice)
@@ -74,7 +74,7 @@ glm-logger [--mac MAC] [--channel N] [--csv FILE] [--lang {de,en}]
 
 | What | Where (Linux) |
 |---|---|
-| Measurement log | `~/.local/share/glm50c/measurements.csv` |
+| Measurement log | `~/Documents/glm50c/measurements.csv` (your XDG documents folder) |
 | Voice models | `~/.local/share/glm50c/voices/` |
 | Config | `~/.config/glm50c/config.toml` |
 
