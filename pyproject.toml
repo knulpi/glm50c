@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "glm50c"
+version = "0.1.0"
+description = "Bosch GLM 50 C laser meter: Bluetooth logging with spoken measurements (Piper TTS)"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+keywords = ["bosch", "glm", "laser", "distance", "bluetooth", "rfcomm", "tts", "piper"]
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Topic :: Home Automation",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "piper-tts>=1.7",
+    "platformdirs>=4",
+]
+
+[project.urls]
+Repository = "https://github.com/CHANGEME/glm50c"
+
+[project.scripts]
+glm-logger = "glm50c.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
