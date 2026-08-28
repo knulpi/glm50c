@@ -6,6 +6,7 @@ sein Verhalten ist durch tests/test_lang_de.py eingefroren.
 
 NAME = "de"
 DEFAULT_VOICE = "de_DE-thorsten-medium"
+DECIMAL = ","  # Dezimaltrennzeichen für die Konsolenanzeige
 
 MODES = {1.0: "Länge", 2.0: "Dauermessung", 4.0: "Fläche", 7.0: "Volumen"}
 
@@ -119,12 +120,15 @@ def result_speech(distance: str) -> str:
 
 UI = {
     # cli
-    "csv_path": "CSV: {path}",
+    "banner_device": "Gerät   {mac} · Kanal {channel}",
+    "banner_csv": "CSV     {path}",
+    "banner_voice": "Stimme  {voice}",
+    "banner_mute": "Ansage  aus",
     "csv_migrated": "Altes CSV-Format erkannt — verschoben nach {path}",
-    "connected": "Verbunden mit {mac} — Messtaste drücken, ich höre zu.",
-    "connection_lost": "Verbindung verloren — Gerät wieder in den BT-Modus "
-                       "bringen (Bluetooth-Taste), ich versuche es weiter …",
-    "connect_retry": "Verbindungsversuch fehlgeschlagen ({error}), neuer Versuch in 5 s",
+    "connected": "Verbunden — Messtaste am GLM drücken, ich höre zu.",
+    "connection_lost": "Verbindung verloren — Bluetooth-Taste am Gerät "
+                       "drücken, ich verbinde automatisch neu …",
+    "waiting": "Warte auf das Gerät … Versuch {n} (Bluetooth-Taste am GLM drücken)",
     "exiting": "Beende …",
     "mode_change": "Moduswechsel: {name}",
     "unknown_mode": "unbekannt",

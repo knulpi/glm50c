@@ -79,7 +79,7 @@ Die deutschen Flags des ursprünglichen Skripts (`--kanal`, `--stumm`,
 
 | Was | Wo (Linux) |
 |---|---|
-| Messwerte-Log | `~/Dokumente/glm50c/measurements.csv` (dein XDG-Dokumente-Ordner) |
+| Messwerte-Log | `~/Dokumente/glm50c/measurements-<startzeit>.csv` — eine Datei pro Lauf (XDG-Dokumente-Ordner) |
 | Sprachmodelle | `~/.local/share/glm50c/voices/` |
 | Config | `~/.config/glm50c/config.toml` |
 

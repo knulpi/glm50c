@@ -74,7 +74,7 @@ glm-logger [--mac MAC] [--channel N] [--csv FILE] [--lang {de,en}]
 
 | What | Where (Linux) |
 |---|---|
-| Measurement log | `~/Documents/glm50c/measurements.csv` (your XDG documents folder) |
+| Measurement log | `~/Documents/glm50c/measurements-<start time>.csv` — one file per run (XDG documents folder) |
 | Voice models | `~/.local/share/glm50c/voices/` |
 | Config | `~/.config/glm50c/config.toml` |
 

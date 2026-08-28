@@ -7,6 +7,7 @@ natural English style and keeps the function pure and testable.
 
 NAME = "en"
 DEFAULT_VOICE = "en_US-lessac-medium"
+DECIMAL = "."  # decimal separator for console display
 
 MODES = {1.0: "Length", 2.0: "Continuous", 4.0: "Area", 7.0: "Volume"}
 
@@ -115,12 +116,15 @@ def result_speech(distance: str) -> str:
 
 UI = {
     # cli
-    "csv_path": "CSV: {path}",
+    "banner_device": "Device  {mac} · channel {channel}",
+    "banner_csv": "CSV     {path}",
+    "banner_voice": "Voice   {voice}",
+    "banner_mute": "Speech  off",
     "csv_migrated": "Old CSV format detected — moved to {path}",
-    "connected": "Connected to {mac} — press the measure button, I'm listening.",
-    "connection_lost": "Connection lost — put the device back into Bluetooth "
-                       "mode (Bluetooth button), retrying …",
-    "connect_retry": "Connection attempt failed ({error}), retrying in 5 s",
+    "connected": "Connected — press the measure button on the GLM, I'm listening.",
+    "connection_lost": "Connection lost — press the Bluetooth button on the "
+                       "device, reconnecting automatically …",
+    "waiting": "Waiting for the device … attempt {n} (press its Bluetooth button)",
     "exiting": "Exiting …",
     "mode_change": "Mode change: {name}",
     "unknown_mode": "unknown",

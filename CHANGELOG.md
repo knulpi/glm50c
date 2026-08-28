@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+- Prettier console output: colored event glyphs (●▰▣◐Σ✗), bold primary
+  values, dim timestamps and details, a startup banner and a single
+  self-updating "waiting for device" status line. Pure ANSI — no new
+  dependencies; colors switch off automatically for pipes and `NO_COLOR`,
+  and are enabled on modern Windows terminals via VT mode.
+- Console numbers use the language's decimal separator (German: comma).
+- One CSV file per run: the default log is now
+  `measurements-<start time>.csv`, created on the first measurement.
+  An explicit `--csv` path or a `csv` entry in the config still names
+  one fixed file.
+
 ## 0.1.0 — 2026-08-28
 
 First packaged release.

@@ -1,5 +1,6 @@
 """User paths (platformdirs), TOML config, and Piper voice download."""
 
+import datetime
 import sys
 import tomllib
 from pathlib import Path
@@ -17,9 +18,13 @@ def voices_dir() -> Path:
     return data_dir() / "voices"
 
 
-def default_csv_path() -> Path:
-    # Measurements are user documents, not app data — keep them visible
-    return Path(platformdirs.user_documents_dir()) / APP_NAME / "measurements.csv"
+def default_csv_path(run_started: datetime.datetime | None = None) -> Path:
+    # Measurements are user documents, not app data — keep them visible.
+    # One file per run, named by the start time (no colons: Windows-safe);
+    # the file itself is only created once the first row is written.
+    stamp = (run_started or datetime.datetime.now()).strftime("%Y%m%d-%H%M%S")
+    return (Path(platformdirs.user_documents_dir()) / APP_NAME
+            / f"measurements-{stamp}.csv")
 
 
 def config_path() -> Path:

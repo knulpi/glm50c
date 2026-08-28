@@ -7,9 +7,10 @@ import sys
 import time
 from pathlib import Path
 
-from glm50c import __version__, bt_setup, config, protocol, storage
+from glm50c import __version__, bt_setup, config, protocol, storage, style
 from glm50c.lang import get_language
 from glm50c.speech import Speaker
+from glm50c.style import bold, faint
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -113,12 +114,27 @@ def main():
     csv_path = args.csv or (Path(cfg["csv"]) if cfg.get("csv")
                             else config.default_csv_path())
     moved = storage.migrate_old_csv(csv_path)
+
+    def tilde(path) -> str:
+        try:
+            return "~/" + str(Path(path).relative_to(Path.home()))
+        except ValueError:
+            return str(path)
+
+    print(bold(f"glm-logger {__version__}") + faint(" · Bosch GLM 50 C"))
+    print(faint("  " + ui["banner_device"].format(mac=mac, channel=channel)))
+    print(faint("  " + ui["banner_csv"].format(path=tilde(csv_path))))
+    print(faint("  " + (ui["banner_voice"].format(voice=Path(speaker.voice_path).stem)
+                        if speaker else ui["banner_mute"])), flush=True)
     if moved:
-        print(ui["csv_migrated"].format(path=moved), flush=True)
-    print(ui["csv_path"].format(path=csv_path), flush=True)
+        print(style.warn(ui["csv_migrated"].format(path=tilde(moved))), flush=True)
 
     unit = args.unit or cfg.get("unit") or "auto"
     say = speaker.say if speaker else (lambda _t: None)
+    dec = language.DECIMAL
+
+    def fmt(value: float, places: int = 3) -> str:
+        return f"{value:.{places}f}".replace(".", dec)
 
     def dist(meters: float) -> str:
         return language.distance_text(meters, precise=not args.coarse, unit=unit)
@@ -129,13 +145,14 @@ def main():
         while True:
             try:
                 s = protocol.connect(mac, channel)
-            except (TimeoutError, OSError) as e:
+            except (TimeoutError, OSError):
                 failures += 1
                 if reported_connected:
-                    print(ui["connection_lost"], flush=True)
+                    print(style.warn("⚠ " + ui["connection_lost"]), flush=True)
                     reported_connected = False
                 else:
-                    print(ui["connect_retry"].format(error=e), end="\r", flush=True)
+                    print("\r" + faint("⟳ " + ui["waiting"].format(n=failures))
+                          + style.clear_line(), end="", flush=True)
                 # Heal a lost pairing (e.g. device was re-paired with a phone)
                 if failures == 3 and bt_setup.available() and not bt_setup.is_paired(mac):
                     print("\n" + ui["repairing"], flush=True)
@@ -151,7 +168,7 @@ def main():
                 path = config.save(cfg)
                 print(ui["config_saved"].format(path=path), flush=True)
 
-            print("\n" + ui["connected"].format(mac=mac), flush=True)
+            print("\n" + style.good("✓ " + ui["connected"]), flush=True)
             reported_connected = True
             buffer = bytearray()
             partials: dict[int, float] = {}  # partial measurements (area/volume)
@@ -166,40 +183,42 @@ def main():
                     buffer += data
                     for kind, value in protocol.parse_frames(buffer):
                         now = datetime.datetime.now()
-                        ts = now.isoformat(timespec="seconds")
+                        clock = now.strftime("%H:%M:%S")
+
+                        def show(text, _kind=kind, _clock=clock):
+                            print(style.event_line(_clock, _kind, text),
+                                  flush=True)
 
                         if kind == "mode":
                             name = language.MODES.get(
                                 value, f"{ui['unknown_mode']} ({value:g})")
-                            print(f"{ts}  " + ui["mode_change"].format(name=name),
-                                  flush=True)
+                            show(ui["mode_change"].format(name=bold(name)))
                             say(language.mode_speech(
                                 language.MODES.get(value, ui["unknown_mode"])))
                             partials.clear()
                         elif kind == "error":
                             name = language.MODES.get(value, f"{value:g}")
-                            print(f"{ts}  " + ui["measure_error"].format(name=name),
-                                  flush=True)
+                            show(ui["measure_error"].format(name=name))
                             storage.append_row(csv_path, now, "error",
                                                distance="ERROR")
                             say(language.error_speech())
                         elif kind == "measurement":
-                            print(f"{ts}  {value:.3f} m  ({value * 1000:.1f} mm)",
-                                  flush=True)
+                            show(bold(f"{fmt(value)} m") + "  "
+                                 + faint(f"({fmt(value * 1000, 1)} mm)"))
                             storage.append_row(csv_path, now, "length",
                                                distance=storage.format_mm(value))
                             say(dist(value))
                         elif kind == "partial":
                             idx, w = value
                             partials[idx] = w
-                            print(f"{ts}  " + ui["partial_line"].format(
-                                index=idx, value=f"{w:.3f}"), flush=True)
+                            show(ui["partial_line"].format(
+                                index=idx, value=bold(fmt(w))))
                             say(language.partial_speech(idx, dist(w)))
                         elif kind == "area":
                             f, length, width = value
-                            print(f"{ts}  " + ui["area_line"].format(
-                                area=f"{f:.3f}", length=f"{length:.3f}",
-                                width=f"{width:.3f}"), flush=True)
+                            show(ui["area_line"].format(
+                                area=bold(fmt(f)), length=fmt(length),
+                                width=fmt(width)))
                             storage.append_row(csv_path, now, "area",
                                                area=f"{f:.4f}",
                                                a=storage.format_mm(length),
@@ -209,8 +228,8 @@ def main():
                             partials.clear()
                         elif kind == "volume":
                             v, l3 = value
-                            print(f"{ts}  " + ui["volume_line"].format(
-                                volume=f"{v:.4f}", length=f"{l3:.3f}"), flush=True)
+                            show(ui["volume_line"].format(
+                                volume=bold(fmt(v, 4)), length=fmt(l3)))
                             storage.append_row(csv_path, now, "volume",
                                                distance=storage.format_mm(l3),
                                                volume=f"{v:.4f}",
@@ -221,9 +240,9 @@ def main():
                             partials.clear()
                         elif kind == "continuous":
                             current, mn, mx = value
-                            print(f"{ts}  " + ui["continuous_line"].format(
-                                value=f"{current:.3f}", min=f"{mn:.3f}",
-                                max=f"{mx:.3f}"), flush=True)
+                            show(ui["continuous_line"].format(
+                                value=bold(fmt(current)), min=fmt(mn),
+                                max=fmt(mx)))
                             storage.append_row(csv_path, now, "continuous",
                                                distance=storage.format_mm(current),
                                                a=storage.format_mm(mn),
@@ -234,10 +253,9 @@ def main():
                             sign = "+" if kind == "add" else "−"
                             label = ui["label_add" if kind == "add"
                                        else "label_subtract"]
-                            print(f"{ts}  " + ui["calc_line"].format(
-                                label=label, a=f"{a:.3f}", sign=sign,
-                                b=f"{b:.3f}", result=f"{result:.3f}", unit="m"),
-                                flush=True)
+                            show(ui["calc_line"].format(
+                                label=label, a=fmt(a), sign=sign,
+                                b=fmt(b), result=bold(fmt(result)), unit="m"))
                             storage.append_row(csv_path, now, kind,
                                                distance=storage.format_mm(result),
                                                a=storage.format_mm(a),
@@ -248,19 +266,18 @@ def main():
                             sign = "+" if kind == "area_add" else "−"
                             label = ui["label_area_add" if kind == "area_add"
                                        else "label_area_subtract"]
-                            print(f"{ts}  " + ui["calc_line"].format(
-                                label=label, a=f"{a:.3f}", sign=sign,
-                                b=f"{b:.3f}", result=f"{result:.3f}", unit="m²"),
-                                flush=True)
+                            show(ui["calc_line"].format(
+                                label=label, a=fmt(a), sign=sign,
+                                b=fmt(b), result=bold(fmt(result)), unit="m²"))
                             storage.append_row(csv_path, now, kind,
                                                area=f"{result:.4f}",
                                                a=f"{a:.4f}", b=f"{b:.4f}")
                             say(language.result_speech(language.area_text(result)))
                         elif kind == "unknown":
                             ftype, floats = value
-                            print(f"{ts}  " + ui["unknown_frame"].format(
+                            show(ui["unknown_frame"].format(
                                 type=f"{ftype:02x}",
-                                values=[round(x, 4) for x in floats]), flush=True)
+                                values=[round(x, 4) for x in floats]))
             except (ConnectionResetError, ConnectionAbortedError, OSError):
                 try:
                     s.close()
