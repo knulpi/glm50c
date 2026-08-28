@@ -120,6 +120,14 @@ uv run ruff check .
 Frame-Parser und Zahl-Verbalisierer sind pure Funktionen mit vollständigen
 Unit-Tests; alles mit Gerätekontakt wird von Hand getestet.
 
+## Credits
+
+Dieses Projekt ist in Co-Autorschaft mit **Claude (Fable 5)**, dem
+KI-Modell von Anthropic, entstanden: der Umbau zum Paket, die englische
+Sprachunterstützung und die Dokumentation stammen aus
+Pair-Programming-Sessions damit. Das Protokoll-Reverse-Engineering wurde
+an echter Hardware verifiziert.
+
 ## Lizenz
 
 [MIT](LICENSE)

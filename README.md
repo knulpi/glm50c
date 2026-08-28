@@ -114,6 +114,13 @@ uv run ruff check .
 The protocol parser and the number verbalizers are pure functions and fully
 unit-tested; everything touching the device is exercised by hand.
 
+## Credits
+
+This project was co-authored with **Claude (Fable 5)**, Anthropic's AI
+model: the restructuring into a package, the English language support and
+the documentation were built in pair-programming sessions with it. The
+protocol reverse engineering was verified against real hardware.
+
 ## License
 
 [MIT](LICENSE)
