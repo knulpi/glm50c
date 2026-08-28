@@ -114,8 +114,8 @@ def main():
                             else config.default_csv_path())
     moved = storage.migrate_old_csv(csv_path)
     if moved:
-        print(ui["csv_migrated"].format(path=moved))
-    print(ui["csv_path"].format(path=csv_path))
+        print(ui["csv_migrated"].format(path=moved), flush=True)
+    print(ui["csv_path"].format(path=csv_path), flush=True)
 
     unit = args.unit or cfg.get("unit") or "auto"
     say = speaker.say if speaker else (lambda _t: None)
@@ -132,10 +132,10 @@ def main():
             except (TimeoutError, OSError) as e:
                 failures += 1
                 if reported_connected:
-                    print(ui["connection_lost"])
+                    print(ui["connection_lost"], flush=True)
                     reported_connected = False
                 else:
-                    print(ui["connect_retry"].format(error=e), end="\r")
+                    print(ui["connect_retry"].format(error=e), end="\r", flush=True)
                 # Heal a lost pairing (e.g. device was re-paired with a phone)
                 if failures == 3 and bt_setup.available() and not bt_setup.is_paired(mac):
                     print("\n" + ui["repairing"], flush=True)
@@ -149,7 +149,7 @@ def main():
             if cfg.get("mac") != mac or cfg.get("channel") != channel:
                 cfg["mac"], cfg["channel"] = mac, channel
                 path = config.save(cfg)
-                print(ui["config_saved"].format(path=path))
+                print(ui["config_saved"].format(path=path), flush=True)
 
             print("\n" + ui["connected"].format(mac=mac), flush=True)
             reported_connected = True
