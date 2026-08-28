@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1 — 2026-08-29
+
+- Fix the released Linux binary reporting "Bluetooth Classic sockets are
+  not available": the release build now uses a system Python (uv's managed
+  Pythons are compiled without `socket.AF_BLUETOOTH`), and the workflow
+  fails early if the build interpreter lacks Bluetooth support.
+
 ## 0.2.0 — 2026-08-29
 
 - Standalone executables for Linux and Windows on the GitHub releases

@@ -7,6 +7,13 @@ on:
 permissions:
   contents: write
 
+# The frozen binary inherits the build interpreter's stdlib. uv's managed
+# Pythons (python-build-standalone) are compiled WITHOUT Bluetooth socket
+# support, so we must build against a system Python (distro build on Linux,
+# setup-python on Windows) and verify AF_BLUETOOTH before building.
+env:
+  UV_PYTHON_PREFERENCE: only-system
+
 jobs:
   build:
     strategy:
@@ -22,10 +29,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-python@v5
+        if: runner.os == 'Windows'
         with:
           python-version: "3.13"
+      - uses: astral-sh/setup-uv@v5
       - run: uv sync --group build
+      - name: Ensure the build Python has Bluetooth sockets
+        run: uv run python -c "import socket; assert hasattr(socket, 'AF_BLUETOOTH'), 'build Python lacks AF_BLUETOOTH'"
       - run: >
           uv run pyinstaller --onefile --name glm-logger --paths src
           --collect-all piper --noconfirm packaging/pyinstaller_entry.py

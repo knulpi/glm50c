@@ -115,8 +115,10 @@ Files with an older header are moved aside automatically, never mixed.
 
 CPython exposes Bluetooth RFCOMM sockets on Windows too, and speech output
 uses the built-in `winsound`. Pair the GLM via Windows Bluetooth settings
-first, then run `glm-logger --mac XX:XX:XX:XX:XX:XX`. This path is untested
-on real hardware — reports welcome.
+first, then run `glm-logger --mac XX:XX:XX:XX:XX:XX`. Double-clicking the
+`.exe` opens a console window where the measurements appear — that is
+normal, keep it open. This path is untested on real hardware — reports
+welcome.
 
 ## Development
 

@@ -121,8 +121,10 @@ mit altem Kopf werden automatisch beiseitegelegt, nie gemischt.
 CPython bietet Bluetooth-RFCOMM-Sockets auch unter Windows, die Sprachausgabe
 nutzt das eingebaute `winsound`. Das GLM zuerst über die
 Windows-Bluetooth-Einstellungen koppeln, dann
-`glm-logger --mac XX:XX:XX:XX:XX:XX`. Dieser Pfad ist auf echter Hardware
-ungetestet — Rückmeldungen willkommen.
+`glm-logger --mac XX:XX:XX:XX:XX:XX`. Ein Doppelklick auf die `.exe` öffnet
+ein Konsolenfenster, in dem die Messwerte erscheinen — das ist normal,
+einfach offen lassen. Dieser Pfad ist auf echter Hardware ungetestet —
+Rückmeldungen willkommen.
 
 ## Entwicklung
 
