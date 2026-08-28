@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact: glm-logger-linux-x86_64
+            binary: dist/glm-logger
+          - os: windows-latest
+            artifact: glm-logger-windows-x86_64.exe
+            binary: dist/glm-logger.exe
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.13"
+      - run: uv sync --group build
+      - run: >
+          uv run pyinstaller --onefile --name glm-logger --paths src
+          --collect-all piper --noconfirm packaging/pyinstaller_entry.py
+      - run: mv ${{ matrix.binary }} ${{ matrix.artifact }}
+        shell: bash
+      - name: Attach binary to the GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ matrix.artifact }}
+          generate_release_notes: true

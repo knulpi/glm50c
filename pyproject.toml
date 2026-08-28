@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "glm50c"
-version = "0.1.0"
+version = "0.2.0"
 description = "Bosch GLM 50 C laser meter: Bluetooth logging with spoken measurements (Piper TTS)"
 readme = "README.md"
 license = "MIT"
@@ -32,6 +32,7 @@ glm-logger = "glm50c.cli:main"
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.6"]
+build = ["pyinstaller>=6.16"]
 
 [tool.ruff]
 line-length = 100

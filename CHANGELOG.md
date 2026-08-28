@@ -1,7 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 — 2026-08-29
 
+- Standalone executables for Linux and Windows on the GitHub releases
+  page (PyInstaller one-file builds, no Python required).
 - Prettier console output: colored event glyphs (●▰▣◐Σ✗), bold primary
   values, dim timestamps and details, a startup banner and a single
   self-updating "waiting for device" status line. Pure ANSI — no new

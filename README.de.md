@@ -25,6 +25,21 @@ Addition/Subtraktion (Länge und Fläche), dazu Fehlmessungs-Frames.
 
 ## Installation
 
+**Variante 1 — einzelne ausführbare Datei, kein Python nötig:** Binary für
+dein System von der [Releases-Seite](https://github.com/knulpi/glm50c/releases)
+laden, dann unter Linux:
+
+```console
+chmod +x glm-logger-linux-x86_64
+./glm-logger-linux-x86_64
+```
+
+(Das Linux-Binary wird auf dem aktuellen Ubuntu LTS gebaut und braucht eine
+ähnlich aktuelle glibc; unter Windows `glm-logger-windows-x86_64.exe` im
+Terminal starten.)
+
+**Variante 2 — als Python-Paket:**
+
 ```console
 pipx install git+https://github.com/knulpi/glm50c
 ```

@@ -24,6 +24,21 @@ addition/subtraction (length and area), plus error frames.
 
 ## Install
 
+**Option 1 — single executable, no Python needed:** grab the binary for
+your OS from the [releases page](https://github.com/knulpi/glm50c/releases),
+then on Linux:
+
+```console
+chmod +x glm-logger-linux-x86_64
+./glm-logger-linux-x86_64
+```
+
+(The Linux binary is built on the current Ubuntu LTS and needs a similarly
+recent glibc; on Windows run `glm-logger-windows-x86_64.exe` from a
+terminal.)
+
+**Option 2 — as a Python package:**
+
 ```console
 pipx install git+https://github.com/knulpi/glm50c
 ```
