@@ -114,6 +114,10 @@ def result_speech(distance: str) -> str:
     return f"Result {distance}"
 
 
+def connected_speech() -> str:
+    return "Connected"
+
+
 UI = {
     # cli
     "banner_device": "Device  {mac} · channel {channel}",

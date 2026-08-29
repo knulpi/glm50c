@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0 — 2026-08-29
+
+- Speak a short confirmation ("Connected" / "Verbunden") whenever the
+  device connects or reconnects, so you know hands-free that measuring
+  is ready again.
+
 ## 0.2.1 — 2026-08-29
 
 - Fix the released Linux binary reporting "Bluetooth Classic sockets are

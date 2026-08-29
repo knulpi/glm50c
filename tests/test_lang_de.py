@@ -56,3 +56,4 @@ def test_speech_builders():
     assert de.area_result_speech("a", "b") == "Zweite Länge a, Fläche b"
     assert de.volume_result_speech("a", "b") == "Dritte Länge a, Volumen b"
     assert de.result_speech("x") == "Ergebnis x"
+    assert de.connected_speech() == "Verbunden"

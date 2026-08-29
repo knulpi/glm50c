@@ -3,7 +3,7 @@ from glm50c.lang import LANGUAGES, de, en, get_language
 PUBLIC_API = ["NAME", "DEFAULT_VOICE", "MODES", "UI", "distance_text",
               "area_text", "volume_text", "mode_speech", "error_speech",
               "partial_speech", "area_result_speech", "volume_result_speech",
-              "result_speech"]
+              "result_speech", "connected_speech"]
 
 
 def test_number_word():
@@ -55,6 +55,7 @@ def test_speech_builders():
     assert en.area_result_speech("a", "b") == "Second length a, area b"
     assert en.volume_result_speech("a", "b") == "Third length a, volume b"
     assert en.result_speech("x") == "Result x"
+    assert en.connected_speech() == "Connected"
 
 
 def test_language_modules_share_interface():

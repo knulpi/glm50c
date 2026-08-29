@@ -169,6 +169,7 @@ def main():
                 print(ui["config_saved"].format(path=path), flush=True)
 
             print("\n" + style.good("✓ " + ui["connected"]), flush=True)
+            say(language.connected_speech())
             reported_connected = True
             buffer = bytearray()
             partials: dict[int, float] = {}  # partial measurements (area/volume)
