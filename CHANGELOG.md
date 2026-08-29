@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.3.1 — 2026-08-29
 
 - Release binaries now carry the version in their file name
   (e.g. `glm-logger-v0.3.1-linux-x86_64`).
