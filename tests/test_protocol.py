@@ -102,3 +102,36 @@ def test_two_frames_in_one_chunk():
     buf = bytearray(frame(0xF2, 1.0) + frame(0x06, 3.0))
     kinds = [kind for kind, _ in parse_frames(buf)]
     assert kinds == ["mode", "measurement"]
+
+
+def test_watchdog_quiet_link_is_ok():
+    from glm50c.protocol import ConnectionWatchdog
+    wd = ConnectionWatchdog(now=100.0)
+    assert wd.tick(now=100.0 + ConnectionWatchdog.SILENCE_LIMIT - 1) == "ok"
+
+
+def test_watchdog_probes_after_silence_limit():
+    from glm50c.protocol import ConnectionWatchdog
+    wd = ConnectionWatchdog(now=100.0)
+    assert wd.tick(now=100.0 + ConnectionWatchdog.SILENCE_LIMIT) == "probe"
+    # only one probe per silence period
+    assert wd.tick(now=100.0 + ConnectionWatchdog.SILENCE_LIMIT + 1) == "ok"
+
+
+def test_watchdog_declares_dead_when_probe_unanswered():
+    from glm50c.protocol import ConnectionWatchdog
+    wd = ConnectionWatchdog(now=100.0)
+    probe_time = 100.0 + ConnectionWatchdog.SILENCE_LIMIT
+    assert wd.tick(now=probe_time) == "probe"
+    assert wd.tick(now=probe_time + ConnectionWatchdog.PROBE_GRACE) == "dead"
+
+
+def test_watchdog_data_resets_silence_and_probe():
+    from glm50c.protocol import ConnectionWatchdog
+    wd = ConnectionWatchdog(now=100.0)
+    probe_time = 100.0 + ConnectionWatchdog.SILENCE_LIMIT
+    assert wd.tick(now=probe_time) == "probe"
+    wd.data_received(now=probe_time + 1)  # ack (or any bytes) arrived
+    assert wd.tick(now=probe_time + ConnectionWatchdog.PROBE_GRACE) == "ok"
+    # next probe requires a fresh full silence period
+    assert wd.tick(now=probe_time + 1 + ConnectionWatchdog.SILENCE_LIMIT) == "probe"

@@ -32,6 +32,38 @@ MODE_AREA = 4.0
 MODE_VOLUME = 7.0
 
 
+class ConnectionWatchdog:
+    """Detect half-open RFCOMM links, which BlueZ sometimes never reports.
+
+    Silence alone is normal (nobody measuring), so after SILENCE_LIMIT
+    seconds without data the caller sends a probe (re-enabling auto-sync is
+    idempotent and always acked); a live link answers, a stale one stays
+    silent and is declared dead after PROBE_GRACE more seconds.
+    """
+
+    SILENCE_LIMIT = 30.0
+    PROBE_GRACE = 10.0
+
+    def __init__(self, now: float):
+        self._last_data = now
+        self._probe_sent: float | None = None
+
+    def data_received(self, now: float) -> None:
+        self._last_data = now
+        self._probe_sent = None
+
+    def tick(self, now: float) -> str:
+        """Returns 'probe' (caller must send one), 'dead', or 'ok'."""
+        if self._probe_sent is not None:
+            if now - self._probe_sent >= self.PROBE_GRACE:
+                return "dead"
+            return "ok"
+        if now - self._last_data >= self.SILENCE_LIMIT:
+            self._probe_sent = now
+            return "probe"
+        return "ok"
+
+
 def connect(mac: str, channel: int) -> socket.socket:
     s = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
     s.settimeout(10)

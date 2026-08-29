@@ -173,14 +173,21 @@ def main():
             reported_connected = True
             buffer = bytearray()
             partials: dict[int, float] = {}  # partial measurements (area/volume)
+            watchdog = protocol.ConnectionWatchdog(time.monotonic())
             try:
                 while True:
                     try:
                         data = s.recv(256)
                     except TimeoutError:
+                        action = watchdog.tick(time.monotonic())
+                        if action == "probe":
+                            s.send(protocol.CMD_AUTOSYNC_ON)
+                        elif action == "dead":
+                            raise ConnectionResetError("stale connection")
                         continue
                     if not data:
                         raise ConnectionResetError("EOF")
+                    watchdog.data_received(time.monotonic())
                     buffer += data
                     for kind, value in protocol.parse_frames(buffer):
                         now = datetime.datetime.now()

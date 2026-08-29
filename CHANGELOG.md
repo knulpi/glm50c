@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.2 — 2026-08-29
+
+- Detect stale connections: half-open RFCOMM links (e.g. after
+  suspend/resume or when the device dies out of range) were never
+  noticed — the logger sat "connected" forever. After 30 s of silence
+  a keepalive probe is sent (the auto-sync command, which the device
+  always acks); if it stays unanswered for 10 s the connection is
+  declared dead and the normal automatic reconnect takes over.
+
 ## 0.3.1 — 2026-08-29
 
 - Release binaries now carry the version in their file name

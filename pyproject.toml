@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "glm50c"
-version = "0.3.1"
+version = "0.3.2"
 description = "Bosch GLM 50 C laser meter: Bluetooth logging with spoken measurements (Piper TTS)"
 readme = "README.md"
 license = "MIT"
