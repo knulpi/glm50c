@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Release binaries now carry the version in their file name
+  (e.g. `glm-logger-v0.3.1-linux-x86_64`).
+
 ## 0.3.0 — 2026-08-29
 
 - Speak a short confirmation ("Connected" / "Verbunden") whenever the

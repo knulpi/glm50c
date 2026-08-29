@@ -21,10 +21,10 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            artifact: glm-logger-linux-x86_64
+            artifact: glm-logger-${{ github.ref_name }}-linux-x86_64
             binary: dist/glm-logger
           - os: windows-latest
-            artifact: glm-logger-windows-x86_64.exe
+            artifact: glm-logger-${{ github.ref_name }}-windows-x86_64.exe
             binary: dist/glm-logger.exe
     runs-on: ${{ matrix.os }}
     steps:

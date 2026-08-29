@@ -30,13 +30,13 @@ dein System von der [Releases-Seite](https://github.com/knulpi/glm50c/releases)
 laden, dann unter Linux:
 
 ```console
-chmod +x glm-logger-linux-x86_64
-./glm-logger-linux-x86_64
+chmod +x glm-logger-v*-linux-x86_64
+./glm-logger-v*-linux-x86_64
 ```
 
 (Das Linux-Binary wird auf dem aktuellen Ubuntu LTS gebaut und braucht eine
-ähnlich aktuelle glibc; unter Windows `glm-logger-windows-x86_64.exe` im
-Terminal starten.)
+ähnlich aktuelle glibc; unter Windows `glm-logger-v<version>-windows-x86_64.exe`
+im Terminal starten.)
 
 **Variante 2 — als Python-Paket:**
 
